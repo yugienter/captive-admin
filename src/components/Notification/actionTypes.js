@@ -1,0 +1,12 @@
+const REDUCER = "notification";
+
+export const UPDATE_LOADING = `@@${REDUCER}/UPDATE_LOADING`;
+export const UPDATE_DATA = `@@${REDUCER}/UPDATE_DATA`;
+export const UPDATE_MORE_DATA = `@@${REDUCER}/UPDATE_MORE_DATA`;
+export const UPDATE_FILTER = `@@${REDUCER}/UPDATE_FILTER`;
+export const UPDATE_SEARCH_TEXT = `@@${REDUCER}/UPDATE_SEARCH_TEXT`;
+export const UPDATE_TABLE_SORT = `@@${REDUCER}/UPDATE_TABLE_SORT`;
+export const UPDATE_PAGINATION = `@@${REDUCER}/UPDATE_PAGINATION`;
+export const UPDATE_TOTAL = `@@${REDUCER}/UPDATE_TOTAL`;
+export const UPDATE_TAB = `@@${REDUCER}/UPDATE_TAB`;
+export const UPDATE_PAGE = `@@${REDUCER}/UPDATE_PAGE`;

@@ -1,0 +1,18 @@
+.notification-section .ant-tabs-nav-wrap {
+  padding-left: 30px;
+}
+.notification-section .notification-tabs .ant-tabs-tabpane {
+  padding: 30px;
+  overflow: hidden;
+}
+.notification-section .notification-item-left {
+  width: 80px;
+  padding: 10px;
+  position: relative;
+}
+.notification-section .notification-view-all {
+  display: none;
+}
+.notification-section .ant-tabs-nav-wrap {
+  background: #F9F9F9;
+}

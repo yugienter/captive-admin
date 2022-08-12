@@ -1,0 +1,28 @@
+.ant-layout-content {
+  height: 100%;
+}
+.ant-layout-footer {
+  display: none;
+}
+.btn-export-xls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #E8E8EA;
+  border-radius: 10px;
+}
+.date-range-export {
+  border: 1px solid #E8E8EA;
+  border-radius: 10px;
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 10px;
+}
+.date-range-export .icon {
+  padding-top: 5px;
+}
+.date-range-export .ant-picker-input > input {
+  text-align: center;
+}

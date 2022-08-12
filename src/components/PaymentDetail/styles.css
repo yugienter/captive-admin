@@ -1,0 +1,13 @@
+.primary-btn {
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 112%;
+  color: #ffffff;
+  background: linear-gradient(254.81deg, #1A5AFF 8.13%, #1EE9B6 92.46%);
+  border-radius: 10px;
+  padding: 10px 18px;
+  border: none;
+  width: 100%;
+  text-align: center;
+  cursor: pointer;
+}
