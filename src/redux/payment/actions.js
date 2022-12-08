@@ -27,9 +27,14 @@ const actions = {
   CHANGE_STATUS_ORDER_ITEM: DOCUMENT + "CHANGE_STATUS_ORDER_ITEM",
   LOAD_COUNT_DATA: DOCUMENT + "LOAD_COUNT_DATA",
   LOAD_COUNT_DATA_COMPLETE: DOCUMENT + "LOAD_COUNT_DATA_COMPLETE",
+  SELECT_PAYMENT_DETAIL: DOCUMENT + "SELECT_PAYMENT_DETAIL",
 
   loadData: (data) => {
     return { type: actions.LOAD_DATA, payload: data };
+  },
+
+  setSelectedPayment: (show) => {
+    return { type: actions.SELECT_PAYMENT_DETAIL, payload: show };
   },
 
   loadDataSuccess: (data) => ({

@@ -19,16 +19,6 @@ export default function ViewExpanded({ jobCode }) {
     rejected: "Rejected",
     verify: "Completed",
   };
-  
-  const statusDeal = {
-    opens: "opens",
-    deal: "deal",
-    proposal: "proposal",
-    accepted: "accepted",
-    rejected: "rejected",
-    complete: "complete",
-    verified: "verified",
-  };
 
   const columns = [
     {

@@ -93,7 +93,9 @@
     "styled-components": "^5.2.0",
     "styled-theme": "^0.3.3",
     "swiper": "5.4.5",
-    "xlsx": "^0.18.5"
+    "xlsx": "^0.18.5",
+    "socket.io-client": "^4.5.1",
+    "socket.io-react-hook": "^1.0.15"
   },
   "devDependencies": {
     "babel-plugin-import": "^1.13.0",

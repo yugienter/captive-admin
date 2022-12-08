@@ -11,7 +11,7 @@ const NotificationPopover = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getNotificationData(tab, 10, 0));
+    dispatch(getNotificationData(tab, 10, 1));
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tab]);
 
@@ -33,11 +33,11 @@ const NotificationPopover = () => {
               )}
             </div>
           }
-          key="All"
+          key="all"
         >
           <NotificationContent />
         </TabPane>
-        <TabPane
+        {/* <TabPane
           tab={
             <div className="notification-tab">
               Chat{" "}
@@ -46,10 +46,10 @@ const NotificationPopover = () => {
               )}
             </div>
           }
-          key="Chat"
+          key="chat"
         >
           <NotificationContent />
-        </TabPane>
+        </TabPane> */}
         <TabPane
           tab={
             <div className="notification-tab">
@@ -61,11 +61,11 @@ const NotificationPopover = () => {
               )}
             </div>
           }
-          key="OrderNPayment"
+          key="orderNPayment"
         >
           <NotificationContent />
         </TabPane>
-        <TabPane
+        {/* <TabPane
           tab={
             <div className="notification-tab">
               Pitch/Proposal{" "}
@@ -76,7 +76,7 @@ const NotificationPopover = () => {
               )}
             </div>
           }
-          key="PitchProposal"
+          key="pitchProposal"
         >
           <NotificationContent />
         </TabPane>
@@ -91,10 +91,10 @@ const NotificationPopover = () => {
               )}
             </div>
           }
-          key="System"
+          key="system"
         >
           <NotificationContent />
-        </TabPane>
+        </TabPane> */}
       </Tabs>
     </>
   );

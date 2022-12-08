@@ -1,13 +1,13 @@
 export const NOTIFICATION_GROUP = {
-  OrderNPayment: "OrderNPayment",
-  PitchProposal: "PitchProposal",
-  System: "System",
-  Chat: "Chat",
+  OrderNPayment: "orderNPayment",
+  PitchProposal: "pitchProposal",
+  System: "system",
+  Chat: "chat",
 }
 
 export const NOTIFICATION_GROUP_TEXT = {
-  OrderNPayment: "Order & Payment",
-  PitchProposal: "Pitch/Proposal",
-  System: "Others",
-  Chat: "Chat",
+  orderNPayment: "Order & Payment",
+  pitchProposal: "Pitch/Proposal",
+  system: "Others",
+  chat: "Chat",
 }

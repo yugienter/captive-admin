@@ -2,87 +2,30 @@ import * as types from "./actionTypes";
 
 const initialState = {
   isLoading: false,
-  tab: "All",
+  showNotification: false,
+  tab: "all",
   notificationPage: 1,
   total: {
-    totalUnclicked: 10,
+    totalUnclicked: 0,
     groups: {
-      chats: 4,
-      system: 2,
-      orderNPayment: 2,
-      pitchProposal: 2,
+      chats: 0,
+      system: 0,
+      orderNPayment: 0,
+      pitchProposal: 0,
     },
   },
   notifications: {
     total: 0,
     totalUnclicked: 0,
     new: {
-      total: 2,
-      totalUnclicked: 2,
-      notifications: [
-        {
-          code: 1,
-          group: "Chat",
-          message: "<b>Merchant A</b> has sent you a message.",
-        },
-        {
-          code: 2,
-          group: "Chat",
-          message: "<b>Merchant B</b> has sent you a message.",
-        },
-      ],
+      total: 0,
+      totalUnclicked: 0,
+      notifications: [],
     },
     earlier: {
-      total: 1,
-      totalUnclicked: 1,
-      notifications: [
-        {
-          code: 1,
-          group: "Chat",
-          message: "<b>Merchant A</b> has sent you a message.",
-        },
-        {
-          code: 2,
-          group: "OrderNPayment",
-          message: "SCX has received payment and approved orders of “<b>Product A</b>” from <b>John</b>. View the orders here.",
-          clickedAt: true,
-        },
-        {
-          code: 3,
-          group: "PitchProposal",
-          message: "<b>John</b> has sent you a new proposal for “<b>Product A</b>”. View it here.",
-          clickedAt: true,
-        },
-        {
-          code: 4,
-          group: "System",
-          message: "<b>Product A</b> has a new campaign. Check it out here!",
-          clickedAt: true,
-        },
-        {
-          code: 5,
-          group: "Chat",
-          message: "<b>Merchant A</b> has sent you a message.",
-        },
-        {
-          code: 6,
-          group: "OrderNPayment",
-          message: "SCX has received payment and approved orders of “<b>Product A</b>” from <b>John</b>. View the orders here.",
-          clickedAt: true,
-        },
-        {
-          code: 7,
-          group: "PitchProposal",
-          message: "<b>John</b> has sent you a new proposal for “<b>Product A</b>”. View it here.",
-          clickedAt: true,
-        },
-        {
-          code: 8,
-          group: "System",
-          message: "<b>Product A</b> has a new campaign. Check it out here!",
-          clickedAt: true,
-        },
-      ],
+      total: 0,
+      totalUnclicked: 0,
+      notifications: [],
     },
   },
   pagination: {
@@ -104,7 +47,7 @@ const notificationReducer = (state = initialState, { type, payload }) => {
     case types.UPDATE_DATA: {
       return {
         ...state,
-        notifications: payload.data,
+        notifications: payload,
       };
     }
 
@@ -118,7 +61,15 @@ const notificationReducer = (state = initialState, { type, payload }) => {
     case types.UPDATE_TOTAL: {
       return {
         ...state,
-        total: payload.data,
+        total: {
+          totalUnclicked: payload?.totalUnclicked ?? 0,
+          groups: {
+            chats: payload?.groups?.chat ?? 0,
+            system: payload?.groups?.system ?? 0,
+            orderNPayment: payload?.groups?.orderNPayment ?? 0,
+            pitchProposal:payload?.groups?.pitchProposal ?? 0,
+          },
+        },
       };
     }
 
@@ -130,12 +81,21 @@ const notificationReducer = (state = initialState, { type, payload }) => {
     }
 
     case types.UPDATE_MORE_DATA: {
-      const notifications = state.notifications;
-      notifications.new.notifications = [...notifications.new.notifications, payload.data.new.notifications];
-      notifications.earlier.notifications = [...notifications.earlier.notifications, payload.data.earlier.notifications];
       return {
         ...state,
-        notifications: {...notifications},
+        notifications: {
+          ...state.notifications,
+          new: {
+            total: state.notifications.new.total + payload.new.total,
+            totalUnclicked: state.notifications.new.totalUnclicked + payload.new.totalUnclicked,
+            notifications: [...state.notifications.new.notifications, ...payload.new.notifications],
+          },
+          earlier: {
+            total: state.notifications.earlier.total + payload.earlier.total,
+            totalUnclicked: state.notifications.earlier.totalUnclicked + payload.earlier.totalUnclicked,
+            notifications: [...state.notifications.earlier.notifications, ...payload.earlier.notifications],
+          },
+        },
       };
     }
 
@@ -146,6 +106,13 @@ const notificationReducer = (state = initialState, { type, payload }) => {
           ...state.pagination,
           payload,
         },
+      };
+    }
+
+    case types.CHANGE_VISIBLE_NOTIFICATION: {
+      return {
+        ...state,
+        showNotification: payload,
       };
     }
     default:

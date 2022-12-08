@@ -42,8 +42,12 @@ const routes = [
     component: lazy(() => import("@iso/containers/PaymentManage/View")),
   },
   {
-    path: "payment",
-    component: lazy(() => import("@iso/containers/Payment/View")),
+    path: 'payment-manage/:paymentCode',
+    component: lazy(() => import('@iso/containers/PaymentManage/View')),
+  },
+  {
+    path: 'payment',
+    component: lazy(() => import('@iso/containers/Payment/View')),
   },
   {
     path: "payment-job/:hostCode/:jobCode",

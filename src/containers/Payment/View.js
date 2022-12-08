@@ -116,11 +116,9 @@ export default function View() {
       }
     }
     message.success("Order change status success");
-    if (selectedApprove.length > 1) {
-      setCheckAll(false);
-      dispatch(selectedOrderUpdate([]));
-      dispatch(selectedPaymentUpdate([]));
-    }
+    setCheckAll(false);
+    dispatch(selectedOrderUpdate([]));
+    dispatch(selectedPaymentUpdate([]));
     dispatch(approveItemsUpdate([]));
     updateTotalAvailable();
   };
@@ -140,11 +138,9 @@ export default function View() {
       message.error("Order change status error");
     }
     message.success("Order change status success");
-    if (selectedReject.length > 1) {
-      setCheckAll(false);
-      dispatch(selectedOrderUpdate([]));
-      dispatch(selectedPaymentUpdate([]));
-    }
+    setCheckAll(false);
+    dispatch(selectedOrderUpdate([]));
+    dispatch(selectedPaymentUpdate([]));
     dispatch(rejectItemsUpdate([]));
     updateTotalAvailable();
   };

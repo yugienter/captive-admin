@@ -138,7 +138,7 @@ export default function PaymentItem({ payment, filterStatus }) {
               <Tooltip placement="top" title={row.reason}>
                 <div>
                   &nbsp;
-                  <RejectInfoIcon />
+                  
                 </div>
               </Tooltip>
             )}

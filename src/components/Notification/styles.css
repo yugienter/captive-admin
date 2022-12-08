@@ -1,9 +1,27 @@
+::-webkit-scrollbar {
+  background-color: #fff;
+  width: 16px;
+}
+::-webkit-scrollbar-track {
+  background-color: #fff;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #babac0;
+  border-radius: 16px;
+  border: 4px solid #fff;
+}
+::-webkit-scrollbar-button {
+  display:none;
+}
 .menu-notification-popover .ant-popover-inner-content {
   width: 420px;
-  min-height: 60vh;
+  max-height: 60vh;
   max-height: initial !important;
   overflow-y: auto;
   padding: 0;
+}
+.notification-tabs .ant-tabs-tab {
+  margin: 0 12px 0 0;
 }
 .notification-tabs .ant-tabs-tab + .ant-tabs-tab {
   margin: 0 0 0 20px;
@@ -73,6 +91,10 @@
 .notification-list {
   width: 100%;
 }
+.menu-notification-popover .notification-list-new {
+  max-height: 31vh;
+  overflow: auto;
+}
 .notification-item {
   width: 100%;
   margin-bottom: 0;
@@ -80,6 +102,9 @@
   align-items: center;
   cursor: pointer;
   align-items: start;
+}
+.notification-item.system .notification-avatar {
+  object-fit: contain!important;
 }
 .notification-item-left {
   width: 20%;
@@ -92,6 +117,7 @@
   object-fit: cover;
   border: 2px solid transparent;
   padding: 2px;
+  height: 55px;
 }
 .notification-item-left .notification-type-icon {
   position: absolute;
@@ -168,27 +194,27 @@
   color: gray;
 }
 /* Group */
-.notification-item.Chat .notification-avatar {
+.notification-item.chat .notification-avatar {
   border-color: #78F2D3;
 }
-.notification-item.Chat .notification-type-text {
+.notification-item.chat .notification-type-text {
   color: #78F2D3;
 }
-.notification-item.OrderNPayment .notification-avatar {
+.notification-item.orderNPayment .notification-avatar {
   border-color: #77BEFF;
 }
-.notification-item.OrderNPayment .notification-type-text {
+.notification-item.orderNPayment .notification-type-text {
   color: #77BEFF;
 }
-.notification-item.PitchProposal .notification-avatar {
+.notification-item.pitchProposal .notification-avatar {
   border-color: #FFB780;
 }
-.notification-item.PitchProposal .notification-type-text {
+.notification-item.pitchProposal .notification-type-text {
   color: #FFB780;
 }
-.notification-item.System .notification-avatar {
+.notification-item.system .notification-avatar {
   border-color: #77757F;
 }
-.notification-item.System .notification-type-text {
+.notification-item.system .notification-type-text {
   color: #77757F;
 }

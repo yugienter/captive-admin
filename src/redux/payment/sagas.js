@@ -36,7 +36,7 @@ function* loadData({ payload }) {
     );
     if (result) {
       yield put(actions.loadDataSuccess(data));
-      return;
+      return data;
     }
     yield put(actions.loadDataError(data));
   } catch (error) {

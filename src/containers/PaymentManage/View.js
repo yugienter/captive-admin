@@ -39,17 +39,22 @@ import * as FileSaver from "file-saver";
 import * as XLSX from "xlsx";
 
 const { RangePicker } = DatePicker;
-const { loadData, changeStatusItem, loadCountData } = dataActions;
+const { loadData, changeStatusItem, loadCountData, setSelectedPayment } =
+  dataActions;
 
 export default function View() {
   const [search] = useState("");
-  const { data, page, limit, isLoading, count } = useSelector(
-    (state) => state.Payment
-  );
+  const {
+    data,
+    page,
+    limit,
+    isLoading,
+    count,
+    selectedPaymentDetail: selectedPayment,
+  } = useSelector((state) => state.Payment);
   const dispatch = useDispatch();
   const [filterStatus, setFilterStatus] = useState("");
   const [filterReceive, setFilterReceive] = useState("");
-  const [selectedPayment, setSelectedPayment] = useState(false);
   const [startDate, setStartDate] = useState(false);
   const [endDate, setEndDate] = useState(false);
   const [dates, setDates] = useState(null);
@@ -107,12 +112,6 @@ export default function View() {
       jobCode: "",
       hostCode: "",
     };
-    // if (startDate) {
-    //   filter.fromDate = startDate.format("YYYY-MM-DD");
-    // }
-    // if (endDate) {
-    //   filter.toDate = endDate.format("YYYY-MM-DD");
-    // }
     dispatch(loadData(filter));
   };
 
@@ -197,28 +196,14 @@ export default function View() {
     message.error("Payment change status error");
   };
 
-  // const cancelPayment = async (code) => {
-  //   const { result } = await updatePaymentStatus(code, "rejected");
-  //   if (result) {
-  //     dispatch(changeStatusItem(code, "rejected"));
-  //     dispatch(loadCountData());
-  //     message.success("Payment change status success");
-  //     return;
-  //   }
-  //   message.error("Payment change status error");
-  // };
-
   const menu = (code) => (
     <Menu>
       <Menu.Item onClick={() => paidPayment(code)}>Paid</Menu.Item>
-      {/* <Menu.Item onClick={() => cancelPayment(code)}>
-        <span className="text-red">Canceled</span>
-      </Menu.Item> */}
     </Menu>
   );
 
   const handleClickDetail = (row) => {
-    setSelectedPayment(row);
+    dispatch(setSelectedPayment(row));
   };
 
   const handleTableChange = (pagination, filter, sorter) => {
@@ -236,12 +221,6 @@ export default function View() {
       jobCode: "",
       hostCode: "",
     };
-    // if (startDate) {
-    //   params.fromDate = startDate.format("YYYY-MM-DD");
-    // }
-    // if (endDate) {
-    //   params.toDate = endDate.format("YYYY-MM-DD");
-    // }
     dispatch(loadData(params));
   };
 
@@ -528,7 +507,11 @@ export default function View() {
                 </Col>
                 <Col
                   span={12}
-                  style={{ display: "flex", alignItems: "center", justifyContent: 'end' }}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "end",
+                  }}
                 >
                   <Label style={{ marginBottom: -5 }}>Date: &nbsp;&nbsp;</Label>
                   <div className="date-range-export">
@@ -578,7 +561,7 @@ export default function View() {
             payment={selectedPayment}
             visible={selectedPayment}
             refreshData={refreshData}
-            handleClose={() => setSelectedPayment(false)}
+            handleClose={() => dispatch(setSelectedPayment(false))}
           />
         </Box>
       </LayoutContentWrapper>

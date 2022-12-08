@@ -20,6 +20,7 @@ const initState = {
   selectedOrder: [],
   selectedApprove: [],
   selectedReject: [],
+  selectedPaymentDetail: false,
 };
 
 export default function reducer(
@@ -48,7 +49,7 @@ export default function reducer(
         isLoading: false,
         errorMessage: "There is a loading problem",
       };
-      case actions.LOAD_DATA_MORE:
+    case actions.LOAD_DATA_MORE:
       return {
         ...state,
         isLoading: true,
@@ -97,6 +98,11 @@ export default function reducer(
         ...state,
         selectedReject: payload.data,
       };
+    case actions.SELECT_PAYMENT_DETAIL:
+      return {
+        ...state,
+        selectedPaymentDetail: payload,
+      };
     case actions.CHANGE_STATUS_ITEM:
       const index = state.data.data.findIndex(
         (item) => item.code === payload.code
@@ -106,20 +112,20 @@ export default function reducer(
         ...state,
         data: { ...state.data },
       };
-      case actions.CHANGE_STATUS_ORDER_ITEM:
-        for (let i = 0; i < state.data.data.length; i++) {
-          const orders = state.data.data[i].orders;
-          for (let j = 0; j < orders.length; j++) {
-            if (orders[j].code === payload.code) {
-              state.data.data[i].orders[j].status = payload.status;
-              state.data.data[i].orders[j].reason = payload.reason;
-            }
+    case actions.CHANGE_STATUS_ORDER_ITEM:
+      for (let i = 0; i < state.data.data.length; i++) {
+        const orders = state.data.data[i].orders;
+        for (let j = 0; j < orders.length; j++) {
+          if (orders[j].code === payload.code) {
+            state.data.data[i].orders[j].status = payload.status;
+            state.data.data[i].orders[j].reason = payload.reason;
           }
         }
-        return {
-          ...state,
-          data: { ...state.data },
-        };
+      }
+      return {
+        ...state,
+        data: { ...state.data },
+      };
     case actions.LOAD_COUNT_DATA_COMPLETE:
       return {
         ...state,

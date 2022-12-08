@@ -50,15 +50,16 @@ const NotificationPage = () => {
       notifications.earlier.notifications.length;
     if (notifications.total <= total) return;
     dispatch(changePage(notificationPage + 1));
-    dispatch(getNotificationData(tab, 10, notificationPage + 1 - 1 * 10));
+    dispatch(getNotificationData(tab, 10, notificationPage + 1));
   };
 
   useEffect(() => {
-    dispatch(getNotificationData(tab, 10, 0));
+    dispatch(getNotificationData(tab, 10, 1));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tab]);
 
   useEffect(() => {
+    console.log(isVisible);
     if (isVisible) {
       loadMore();
     }
@@ -90,11 +91,11 @@ const NotificationPage = () => {
                       )}
                     </div>
                   }
-                  key="All"
+                  key="all"
                 >
                   <NotificationContent isFull={true} />
                 </TabPane>
-                <TabPane
+                {/* <TabPane
                   tab={
                     <div className="notification-tab">
                       Chat{" "}
@@ -105,10 +106,10 @@ const NotificationPage = () => {
                       )}
                     </div>
                   }
-                  key="Chat"
+                  key="chat"
                 >
                   <NotificationContent isFull={true} />
-                </TabPane>
+                </TabPane> */}
                 <TabPane
                   tab={
                     <div className="notification-tab">
@@ -120,11 +121,11 @@ const NotificationPage = () => {
                       )}
                     </div>
                   }
-                  key="OrderNPayment"
+                  key="orderNPayment"
                 >
                   <NotificationContent isFull={true} />
                 </TabPane>
-                <TabPane
+                {/* <TabPane
                   tab={
                     <div className="notification-tab">
                       Pitch/Proposal{" "}
@@ -135,11 +136,11 @@ const NotificationPage = () => {
                       )}
                     </div>
                   }
-                  key="PitchProposal"
+                  key="pitchProposal"
                 >
                   <NotificationContent isFull={true} />
-                </TabPane>
-                <TabPane
+                </TabPane> */}
+                {/* <TabPane
                   tab={
                     <div className="notification-tab">
                       Others{" "}
@@ -150,10 +151,10 @@ const NotificationPage = () => {
                       )}
                     </div>
                   }
-                  key="System"
+                  key="system"
                 >
                   <NotificationContent isFull={true} />
-                </TabPane>
+                </TabPane> */}
               </Tabs>
             </div>
             <div ref={ref} className="opacity-0">

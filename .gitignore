@@ -65,6 +65,5 @@ node_modules/
 .env
 
 # Local Netlify folder
-.netlify
 .env.production
 /build
