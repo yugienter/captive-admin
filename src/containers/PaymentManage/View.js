@@ -216,6 +216,9 @@ export default function View() {
           const paymentOrderDetails = _.get(orderItem, "orderDetails", []);
           paymentOrderDetails.map(orderDetailItem => {
             const orderDetailInfo = {
+              "Payment ID": `${paymentCodePrefix(paymentItem)}${paymentItem.code}`,
+              "Payment Type": paymentTypeText(paymentItem),
+
               "Product Code": orderDetailItem.productCode,
               "Product Name": orderDetailItem.name,
               "Product Price": orderDetailItem.price + orderDetailItem.unit,
@@ -242,8 +245,6 @@ export default function View() {
               "Company Name": paymentItem.company.name,
               "Company Email": paymentItem.company.email,
 
-              "Payment ID": `${paymentCodePrefix(paymentItem)}${paymentItem.code}`,
-              Type: paymentTypeText(paymentItem),
 
               "Sender/Receiver": getSenderName(paymentItem),
               "Product/Job Name": paymentItem.jobName,
