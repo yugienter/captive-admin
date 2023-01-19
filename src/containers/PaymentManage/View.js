@@ -1,3 +1,4 @@
+import _ from "lodash";
 import "./style.css";
 
 import {
@@ -153,37 +154,121 @@ export default function View() {
       const data = await getDataExport(i + 1);
       result = [...result, ...data.data];
     }
-    const exportData = result.map((item) => {
-      return {
-        "Payment ID": `${paymentCodePrefix(item)}${item.code}`,
-        Type: paymentTypeText(item),
-        "Sender/Receiver": getSenderName(item),
-        "Product/Job Name": item.jobName,
-        "Payment Status": paymentStatus[item.status],
-        Amount: (item.receive === "scx" ? "+" : "-") + item.total,
-        Date: moment(item.createdAt).format("DD-MM-YYYY"),
-      };
-    });
+
+    const { orders, payments } = prepareDataToExport(result);
+    exportXls(orders, "Payment_Orders_Details");
+    exportXls(payments, "Payment");
+    // const exportData = result.map((item) => {
+    //   return {
+    //     "Payment ID": `${paymentCodePrefix(item)}${item.code}`,
+    //     Type: paymentTypeText(item),
+    //     "Sender/Receiver": getSenderName(item),
+    //     "Product/Job Name": item.jobName,
+    //     "Payment Status": paymentStatus[item.status],
+    //     Amount: (item.receive === "scx" ? "+" : "-") + item.total,
+    //     Date: moment(item.createdAt).format("DD-MM-YYYY"),
+    //   };
+    // });
+    // const fileType =
+    //   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+    // const fileExtension = ".xlsx";
+    // const ws = XLSX.utils.json_to_sheet(exportData);
+    // var wscols = [
+    //   { wpx: 150 },
+    //   { wpx: 150 },
+    //   { wpx: 150 },
+    //   { wpx: 150 },
+    //   { wpx: 150 },
+    //   { wpx: 150 },
+    //   { wpx: 150 },
+    // ];
+    // ws["!cols"] = wscols;
+    // const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
+    // const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+    // const fileData = new Blob([excelBuffer], { type: fileType });
+    // const fileName = `Payment_${moment().format("DD-MM-YYYY")}${fileExtension}`;
+    // FileSaver.saveAs(fileData, fileName);
+  };
+
+  const exportXls = (data, filePrefix) => {
     const fileType =
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
     const fileExtension = ".xlsx";
-    const ws = XLSX.utils.json_to_sheet(exportData);
-    var wscols = [
-      { wpx: 150 },
-      { wpx: 150 },
-      { wpx: 150 },
-      { wpx: 150 },
-      { wpx: 150 },
-      { wpx: 150 },
-      { wpx: 150 },
-    ];
+    const ws = XLSX.utils.json_to_sheet(data);
+    var wscols = _.keys(data[0]).map(key => ({ wpx: 150 }));
+
     ws["!cols"] = wscols;
     const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
     const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
     const fileData = new Blob([excelBuffer], { type: fileType });
-    const fileName = `Payment_${moment().format("DD-MM-YYYY")}${fileExtension}`;
+    const fileName = `${filePrefix}_${moment().format("DD-MM-YYYY")}${fileExtension}`;
+    console.log(fileName, data, fileData)
     FileSaver.saveAs(fileData, fileName);
-  };
+  }
+
+  const prepareDataToExport = (data) => {
+    const orders = [];
+    const payments = data.map((paymentItem) => {
+      // parse order details 
+      const paymentOrders = _.get(paymentItem, "orders", []);
+      paymentOrders.map(orderItem => {
+        if (_.has(orderItem, "deliveryInfo") && _.has(orderItem, "orderDetails")) {
+          const paymentOrderDetails = _.get(orderItem, "orderDetails", []);
+          paymentOrderDetails.map(orderDetailItem => {
+            const orderDetailInfo = {
+              "Product Code": orderDetailItem.productCode,
+              "Product Name": orderDetailItem.name,
+              "Product Price": orderDetailItem.price + orderDetailItem.unit,
+              "Discount": orderDetailItem.discount + orderDetailItem.discountUnit,
+              "Quantity": orderDetailItem.quantity,
+              "Bronze Tier": orderDetailItem.tiers.bronze.value + orderDetailItem.tiers.bronze.unit,
+              "Silver Tier": orderDetailItem.tiers.silver.value + orderDetailItem.tiers.silver.unit,
+              "Gold Tier": orderDetailItem.tiers.gold.value + orderDetailItem.tiers.gold.unit,
+              "Status": orderDetailItem.status,
+              "Order Date": moment(orderItem.createdAt).format("DD-MM-YYYY"),
+
+              "Delivery Name": orderItem.deliveryInfo.name,
+              "Delivery Phone Number": orderItem.deliveryInfo.phoneNumber,
+              "Delivery Address 1": orderItem.deliveryInfo.address1,
+              "Delivery Address 2": orderItem.deliveryInfo.address2,
+              "Delivery Delivery Date": moment(orderItem.deliveryInfo.deliveryDate).format("DD-MM-YYYY"),
+              "Delivery Delivery Time": moment(orderItem.deliveryInfo.deliveryTime).format("HH:mm"),
+
+              "Campaign Name": _.get(paymentItem, "campaign.campaign.name"),
+
+              "Host Name": paymentItem.host.name,
+              "Host Email": paymentItem.host.email,
+
+              "Company Name": paymentItem.company.name,
+              "Company Email": paymentItem.company.email,
+
+              "Payment ID": `${paymentCodePrefix(paymentItem)}${paymentItem.code}`,
+              Type: paymentTypeText(paymentItem),
+
+              "Sender/Receiver": getSenderName(paymentItem),
+              "Product/Job Name": paymentItem.jobName,
+              "Payment Status": paymentStatus[paymentItem.status],
+              "Payment Date": moment(paymentItem.createdAt).format("DD-MM-YYYY"),
+            };
+
+            orders.push(orderDetailInfo);
+          });
+        }
+      })
+
+      // default payment data 
+      return {
+        "Payment ID": `${paymentCodePrefix(paymentItem)}${paymentItem.code}`,
+        Type: paymentTypeText(paymentItem),
+        "Sender/Receiver": getSenderName(paymentItem),
+        "Product/Job Name": paymentItem.jobName,
+        "Payment Status": paymentStatus[paymentItem.status],
+        Amount: (paymentItem.receive === "scx" ? "+" : "-") + paymentItem.total,
+        Date: moment(paymentItem.createdAt).format("DD-MM-YYYY"),
+      };
+    });
+    return { payments, orders };
+  }
 
   const paidPayment = async (code) => {
     const { result } = await updatePaymentStatus(code, "approved");
