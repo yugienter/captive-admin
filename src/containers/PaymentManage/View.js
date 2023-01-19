@@ -227,7 +227,8 @@ export default function View() {
               "Bronze Tier": orderDetailItem.tiers.bronze.value + orderDetailItem.tiers.bronze.unit,
               "Silver Tier": orderDetailItem.tiers.silver.value + orderDetailItem.tiers.silver.unit,
               "Gold Tier": orderDetailItem.tiers.gold.value + orderDetailItem.tiers.gold.unit,
-              "Status": orderDetailItem.status,
+              "Product Status": orderDetailItem.status,
+              "Order Status": orderItem.status,
               "Order Date": moment(orderItem.createdAt).format("DD-MM-YYYY"),
 
               "Delivery Name": orderItem.deliveryInfo.name,
