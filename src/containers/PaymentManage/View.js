@@ -195,70 +195,88 @@ export default function View() {
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
     const fileExtension = ".xlsx";
     const ws = XLSX.utils.json_to_sheet(data);
-    var wscols = _.keys(data[0]).map(key => ({ wpx: 150 }));
+    var wscols = _.keys(data[0]).map((key) => ({ wpx: 150 }));
 
     ws["!cols"] = wscols;
     const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
     const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
     const fileData = new Blob([excelBuffer], { type: fileType });
-    const fileName = `${filePrefix}_${moment().format("DD-MM-YYYY")}${fileExtension}`;
-    console.log(fileName, data, fileData)
+    const fileName = `${filePrefix}_${moment().format(
+      "DD-MM-YYYY"
+    )}${fileExtension}`;
+    console.log(fileName, data, fileData);
     FileSaver.saveAs(fileData, fileName);
-  }
+  };
 
   const prepareDataToExport = (data) => {
     const orders = [];
     const payments = data.map((paymentItem) => {
-      // parse order details 
+      // parse order details
       const paymentOrders = _.get(paymentItem, "orders", []);
-      paymentOrders.map(orderItem => {
-        if (_.has(orderItem, "deliveryInfo") && _.has(orderItem, "orderDetails")) {
+      paymentOrders.map((orderItem) => {
+        if (
+          _.has(orderItem, "deliveryInfo") &&
+          _.has(orderItem, "orderDetails")
+        ) {
           const paymentOrderDetails = _.get(orderItem, "orderDetails", []);
-          paymentOrderDetails.map(orderDetailItem => {
+          paymentOrderDetails.map((orderDetailItem) => {
             const orderDetailInfo = {
-              "Payment ID": `${paymentCodePrefix(paymentItem)}${paymentItem.code}`,
-              "Payment Type": paymentTypeText(paymentItem),
+              "Payment ID": `${paymentCodePrefix(paymentItem)}${
+                paymentItem.code
+              }`,
+              // "Payment Type": paymentTypeText(paymentItem),
 
-              "Product Code": orderDetailItem.productCode,
+              // "Product Code": orderDetailItem.productCode,
               "Product Name": orderDetailItem.name,
               "Product Price": orderDetailItem.price + orderDetailItem.unit,
-              "Discount": orderDetailItem.discount + orderDetailItem.discountUnit,
-              "Quantity": orderDetailItem.quantity,
-              "Bronze Tier": orderDetailItem.tiers.bronze.value + orderDetailItem.tiers.bronze.unit,
-              "Silver Tier": orderDetailItem.tiers.silver.value + orderDetailItem.tiers.silver.unit,
-              "Gold Tier": orderDetailItem.tiers.gold.value + orderDetailItem.tiers.gold.unit,
-              "Product Status": orderDetailItem.status,
+              Discount: orderDetailItem.discount + orderDetailItem.discountUnit,
+              Quantity: orderDetailItem.quantity,
+              // "Bronze Tier":
+              //   orderDetailItem.tiers.bronze.value +
+              //   orderDetailItem.tiers.bronze.unit,
+              // "Silver Tier":
+              //   orderDetailItem.tiers.silver.value +
+              //   orderDetailItem.tiers.silver.unit,
+              // "Gold Tier":
+              //   orderDetailItem.tiers.gold.value +
+              //   orderDetailItem.tiers.gold.unit,
+              // "Product Status": orderDetailItem.status,
               "Order Status": orderItem.status,
               "Order Date": moment(orderItem.createdAt).format("DD-MM-YYYY"),
 
               "Delivery Name": orderItem.deliveryInfo.name,
               "Delivery Phone Number": orderItem.deliveryInfo.phoneNumber,
               "Delivery Address 1": orderItem.deliveryInfo.address1,
-              "Delivery Address 2": orderItem.deliveryInfo.address2,
-              "Delivery Delivery Date": moment(orderItem.deliveryInfo.deliveryDate).format("DD-MM-YYYY"),
-              "Delivery Delivery Time": moment(orderItem.deliveryInfo.deliveryTime).format("HH:mm"),
+              // "Delivery Address 2": orderItem.deliveryInfo.address2,
+              "Delivery Delivery Date": moment(
+                orderItem.deliveryInfo.deliveryDate
+              ).format("DD-MM-YYYY"),
+              // "Delivery Delivery Time": moment(
+              //   orderItem.deliveryInfo.deliveryTime
+              // ).format("HH:mm"),
 
               "Campaign Name": _.get(paymentItem, "campaign.campaign.name"),
 
               "Host Name": paymentItem.host.name,
-              "Host Email": paymentItem.host.email,
+              // "Host Email": paymentItem.host.email,
 
               "Company Name": paymentItem.company.name,
-              "Company Email": paymentItem.company.email,
+              // "Company Email": paymentItem.company.email,
 
-
-              "Sender/Receiver": getSenderName(paymentItem),
+              // "Sender/Receiver": getSenderName(paymentItem),
               "Product/Job Name": paymentItem.jobName,
               "Payment Status": paymentStatus[paymentItem.status],
-              "Payment Date": moment(paymentItem.createdAt).format("DD-MM-YYYY"),
+              "Payment Date": moment(paymentItem.createdAt).format(
+                "DD-MM-YYYY"
+              ),
             };
 
             orders.push(orderDetailInfo);
           });
         }
-      })
+      });
 
-      // default payment data 
+      // default payment data
       return {
         "Payment ID": `${paymentCodePrefix(paymentItem)}${paymentItem.code}`,
         Type: paymentTypeText(paymentItem),
@@ -270,7 +288,7 @@ export default function View() {
       };
     });
     return { payments, orders };
-  }
+  };
 
   const paidPayment = async (code) => {
     const { result } = await updatePaymentStatus(code, "approved");
